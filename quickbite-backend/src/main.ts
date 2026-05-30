@@ -11,7 +11,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true}));
   
-  // Swagger setup
+  // Swagger setup for testing
   const config = new DocumentBuilder()
     .setTitle('QuickBite API')
     .setVersion('1.0')
