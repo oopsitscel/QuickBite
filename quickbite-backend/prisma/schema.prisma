@@ -27,30 +27,35 @@ model User {
   password  String
   role      Role
 
-  orders    Order[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  customerOrders  Order[] @relation("CustomerOrders")
+  chefOrders      Order[] @relation("ChefOrders")
 }
 
 model Category {
-  id        String @id @default(uuid())
-  name      String
+  id          String   @id @default(uuid())
+  name        String
+  description String?
 
-  menus     Menu[]
+  menus       Menu[]
 }
 
 model Menu {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  price       Float
-  imageUrl    String?
+  id                    String   @id @default(uuid())
+  name                  String
+  description           String
+  price                 Float
+  stock                 Int
+  estimatedCookingTime  Int
+  imageUrl              String?
+  isAvailable           Boolean @default(true)
 
-  categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId            String
+  category              Category @relation(fields: [categoryId], references: [id])
 
-  orderItems  OrderDetail[]
+  orderItems            OrderDetail[]
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 }
 
 model Order {
@@ -59,11 +64,15 @@ model Order {
   totalPrice  Float
 
   customerId  String
-  customer    User @relation(fields: [customerId], references: [id])
+  customer    User @relation("CustomerOrders", fields: [customerId], references: [id])
+
+  chefId      String?
+  chef        User? @relation("ChefOrders", fields: [chefId], references: [id])
 
   details     OrderDetail[]
 
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model OrderDetail {
