@@ -9,7 +9,14 @@ import { MenusModule } from './menus/menus.module';
 import { OrdersModule } from './orders/orders.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule, CategoriesModule, MenusModule, OrdersModule],
+  imports: [
+    PrismaModule, 
+    AuthModule, 
+    UsersModule, 
+    CategoriesModule, 
+    MenusModule, 
+    OrdersModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
