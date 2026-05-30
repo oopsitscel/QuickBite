@@ -1,13 +1,80 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  CHEF
+  CUSTOMER
+}
+
+enum OrderStatus {
+  PENDING
+  COOKING
+  READY
+  COMPLETED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+
+  orders    Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String @id @default(uuid())
+  name      String
+
+  menus     Menu[]
+}
+
+model Menu {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  imageUrl    String?
+
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+
+  orderItems  OrderDetail[]
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  status      OrderStatus @default(PENDING)
+  totalPrice  Float
+
+  customerId  String
+  customer    User @relation(fields: [customerId], references: [id])
+
+  details     OrderDetail[]
+
+  createdAt   DateTime @default(now())
+}
+
+model OrderDetail {
+  id        String @id @default(uuid())
+
+  orderId   String
+  menuId    String
+
+  quantity  Int
+  price     Float
+
+  order     Order @relation(fields: [orderId], references: [id])
+  menu      Menu  @relation(fields: [menuId], references: [id])
 }
