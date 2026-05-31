@@ -1,8 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 
 import { MenusService } from './menus.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
+
+import { ApiBearerAuth } from '@nestjs/swagger';
+
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('menu')
 export class MenusController {
@@ -10,7 +16,10 @@ export class MenusController {
     private readonly menusService: MenusService,
   ) {}
 
-  @Post()
+  @Post() // Admin and Chef can create menu items
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  @Roles('ADMIN', 'CHEF')
   create(@Body() dto: CreateMenuDto) {
     return this.menusService.create(dto);
   }
@@ -25,7 +34,10 @@ export class MenusController {
     return this.menusService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch(':id') // Admin and Chef can update menu items
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  @Roles('ADMIN', 'CHEF') 
   update(
     @Param('id') id: string,
     @Body() dto: UpdateMenuDto,
@@ -33,7 +45,10 @@ export class MenusController {
     return this.menusService.update(id, dto);
   }
 
-  @Delete(':id')
+  @Delete(':id') // Only admin can delete menu items
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  @Roles('ADMIN')
   remove(@Param('id') id: string) {
     return this.menusService.remove(id);
   }

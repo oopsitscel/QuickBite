@@ -1,8 +1,14 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 
 import { CategoriesService } from './categories.service';
 
 import { CreateCategoryDto } from './dto/create-category.dto';
+
+import { ApiBearerAuth } from '@nestjs/swagger';
+
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('categories')
 export class CategoriesController {
@@ -10,14 +16,15 @@ export class CategoriesController {
     private readonly categoriesService: CategoriesService,
   ) {}
 
-  @Post()
-  create(
-    @Body() dto: CreateCategoryDto,
-  ) {
+  @Post() // Only admin can create categories
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  @Roles('ADMIN')
+  create(@Body() dto: CreateCategoryDto) {
     return this.categoriesService.create(dto);
   }
 
-  @Get()
+  @Get() // Public
   findAll() {
     return this.categoriesService.findAll();
   }

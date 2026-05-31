@@ -11,10 +11,12 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true}));
   
-  // Swagger setup for testing
+  // Swagger setup
   const config = new DocumentBuilder()
     .setTitle('QuickBite API')
+    .setDescription('Restaurant Management and Food Ordering API')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

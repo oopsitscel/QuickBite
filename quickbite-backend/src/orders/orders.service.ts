@@ -129,28 +129,82 @@ export class OrdersService {
     return this.toOrderResponse(order);
   }
 
-  async findAll() {
-    const orders = await this.prisma.order.findMany({
-      include: {
-        customer: {
-          select: { id: true, name: true, email: true },
-        },
-        chef: {
-          select: { id: true, name: true, email: true },
-        },
-        details: {
-          include: {
-            menu: {
-              select: { id: true, name: true, price: true },
+  async findAll(user: any) {
+    let orders;
+    // Admin can see all orders
+    if (user.role === Role.ADMIN) {
+      orders = await this.prisma.order.findMany({
+        include: {
+          customer: {
+            select: { id: true, name: true, email: true },
+          },
+          chef: {
+            select: { id: true, name: true, email: true },
+          },
+          details: {
+            include: {
+              menu: {
+                select: { id: true, name: true, price: true },
+              },
             },
           },
         },
-      },
 
-      orderBy: { createdAt: 'desc' },
-    });
+        orderBy: { createdAt: 'desc' },
+      });
+    }
 
-    return orders.map((order) => this.toOrderResponse(order));
+    // Customers can only see their own orders 
+    if (user.role === Role.CUSTOMER) {
+      orders = await this.prisma.order.findMany({
+        where: { customerId: user.id },
+        include: {
+          customer: {
+            select: { id: true, name: true, email: true },
+          },
+          chef: {
+            select: { id: true, name: true, email: true },
+          },
+          details: {
+            include: {
+              menu: {
+                select: { id: true, name: true, price: true },
+              },
+            },
+          },
+        },
+
+        orderBy: { createdAt: 'desc' },
+      });
+    }
+    
+    // Chefs can only see orders assigned to them
+    if (user.role === Role.CHEF) {
+      orders = await this.prisma.order.findMany({
+        where: { chefId: user.id },
+        include: {
+          customer: {
+            select: { id: true, name: true, email: true },
+          },
+          chef: {
+            select: { id: true, name: true, email: true },
+          },
+          details: {
+            include: {
+              menu: {
+                select: { id: true, name: true, price: true },
+              },
+            },
+          },
+        },
+
+        orderBy: { createdAt: 'desc' },
+      });
+    }
+
+
+    if(orders) return orders.map((o) => this.toOrderResponse(o));
+    else throw new BadRequestException('Invalid Role. Unable to fetch orders');
   }
 
   async findOne(id: string) {

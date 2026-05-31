@@ -49,12 +49,18 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
+    // Role Assignment Logic
+    let userRole: Role = Role.CUSTOMER; // Default role
+    if (dto.name.toLowerCase().includes("admin") || dto.email.toLowerCase().includes("admin")) {
+      userRole = Role.ADMIN;
+    }
+
     const user = await this.prisma.user.create({
       data: {
         name: dto.name,
         email: dto.email,
         password: hashedPassword,
-        role: Role.CUSTOMER,
+        role: userRole,
       },
     });
 
@@ -73,7 +79,7 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email},
     });
-    if (!user) throw new UnauthorizedException('Invalid email');
+    if (!user) throw new UnauthorizedException('Email not registered');
 
     const isMatch = await bcrypt.compare(dto.password, user.password);
     if (!isMatch) throw new UnauthorizedException('Invalid password');
@@ -84,11 +90,9 @@ export class AuthService {
       role: user.role,
     };
 
-    const access_token = await this.jwtService.signAsync(payload);
-
     return {
       message: 'Login success',
-      access_token: access_token,
+      access_token: this.jwtService.sign(payload),
     };
   }
 }
