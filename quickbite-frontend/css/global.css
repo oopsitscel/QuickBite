@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f8f5fb;
+  color: #2b1d35;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+}
+
+.gradient-btn {
+  background: linear-gradient(
+    135deg,
+    #c84cb3,
+    #8f6bff
+  );
+
+  font-size: 16px;
+  color: white;
+  border-radius: 999px;
+  padding: 12px 20px;
+  margin: 15px 0;
+}
