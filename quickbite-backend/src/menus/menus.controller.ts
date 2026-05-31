@@ -45,11 +45,11 @@ export class MenusController {
     return this.menusService.update(id, dto);
   }
 
-  @Delete(':id') // Only admin can delete menu items
+  @Patch(':id/availability') // Only admin and chef can update menu availability
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
-  @Roles('ADMIN')
-  remove(@Param('id') id: string) {
-    return this.menusService.remove(id);
+  @Roles('ADMIN', 'CHEF')
+  updateAvailability(@Param('id') id: string) {
+    return this.menusService.updateAvailability(id);
   }
 }

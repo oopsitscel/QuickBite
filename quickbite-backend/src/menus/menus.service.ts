@@ -84,14 +84,18 @@ export class MenusService {
     });
   }
 
-  async remove(id: string) {
+  async updateAvailability(id: string) {
+    // Menu Existence Validation
     const menu = await this.prisma.menu.findUnique({
       where: { id },
     });
-    if (!menu) throw new NotFoundException('Menu not found');
-
-    return this.prisma.menu.delete({
+    if (!menu) throw new NotFoundException(`Menu with ID ${id} not found`);
+    
+    return this.prisma.menu.update({
       where: { id },
+      data: {
+        isAvailable: false,
+      },
     });
   }
 }
