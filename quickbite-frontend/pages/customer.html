@@ -3,6 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>QuickBite Customer</title>
 
   <link rel="stylesheet" href="../css/global.css"/>
@@ -10,51 +12,100 @@
 </head>
 
 <body>
-  <div class="navbar">
-    <h1>QuickBite</h1>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <h1>
+        QuickBite
+      </h1>
 
-    <button id="logoutBtn">
-      Logout
-    </button>
-  </div>
+      <div class="nav-links">
+        <button id="menuNav" class="active">
+          Menu
+        </button>
 
-  <div class="container">
-    <div class="menu-section">
-      <h2 class="section-title">
-        Food Menu
-      </h2>
-
-      <div id="menuContainer" class="menu-grid">
-        
+        <button id="ordersNav">
+          My Orders
+        </button>
       </div>
-
     </div>
 
-    <div class="cart-section">
-      <h2>
+    <button id="logoutBtn" class ="logout-btn">
+      Logout
+    </button>
+    
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+
+    <!-- Menu Section -->
+    <section id="menuSection" class="menu-section">
+      <div class="section-header">
+        <h1>
+          Welcome to QuickBite!
+        </h1>
+
+        <p>
+          Browse our delicious menu and place your order now.
+        </p>
+
+        <h2 class="section-title">
+          Food Menu
+        </h2>
+      </div>
+
+      <div id="menuContainer" class="menu-grid">
+        <!-- Menu items will be dynamically inserted here -->
+      </div>
+    </section>
+
+    <!-- Cart Section -->
+    <aside class="cart-section">
+      <h2 class="section-title">
         Your Cart
       </h2>
 
       <div id="cartItems"> 
-        Your cart is empty.
+        Cart is empty.
       </div>
 
       <div class="cart-footer">
-        <h3>
-          Total:
+        <div class="total-row">
+          <span>
+            Total:
+          </span>
+
           <span id="cartTotal">
             Rp 0
           </span>
-        </h3>
+        </div>
 
         <button class="gradient-btn" id="checkoutBtn">
           Checkout
         </button>
       </div>
 
+    </aside>
   </div>
 
-  </div>
+  <!-- ORDERS SECTION --> 
+  <section id="ordersSection" class="orders-page">
+
+    <div class="orders-header"> 
+      <p class="section-header">
+        ORDER HISTORY 
+      </p> 
+      
+      <h1 class="section-title">
+        My Orders 
+      </h1> 
+    </div> 
+    
+    <div id="ordersContainer">
+      <!-- Orders will be dynamically inserted here -->
+    </div> 
+  </section>
 
   <script src="../js/api.js"></script>
 

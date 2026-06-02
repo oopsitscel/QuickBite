@@ -1,4 +1,12 @@
+const menuSection = document.getElementById("menuSection");
 const menuContainer = document.getElementById("menuContainer");
+
+const ordersSection = document.getElementById("ordersSection");
+const ordersContainer = document.getElementById("ordersContainer");
+
+const menuNav = document.getElementById("menuNav");
+const ordersNav = document.getElementById("ordersNav");
+
 const cartItemsContainer = document.getElementById("cartItems");
 const cartTotal = document.getElementById("cartTotal");
 const checkoutBtn = document.getElementById("checkoutBtn");
@@ -160,8 +168,8 @@ function renderCart() {
 
   if (cart.length === 0) {
     cartItemsContainer.innerHTML = `
-      <p>
-        Your Cart is empty
+      <p class="empty-cart">
+        Cart is empty
       </p>
     `;
 
@@ -246,6 +254,116 @@ function renderCart() {
   cartTotal.innerText = `Rp ${total}`;
 }
 
+async function loadMyOrders() {
+  try {
+    const orders = await fetchAPI("/orders",
+      {
+        headers: {
+          Authorization: `Bearer ${
+            localStorage.getItem("token")
+          }`,
+        },
+      }
+    );
+    
+    const userId = localStorage.getItem("userId");
+
+    const myOrders = orders.filter(order => order.customer.id === userId);
+
+    renderOrders(myOrders);
+  } catch (error) {
+    console.error(error);
+  }
+  
+}
+
+function renderOrders(orders) {
+  ordersContainer.innerHTML = "";
+
+  if (orders.length === 0) {
+    ordersContainer.innerHTML = `
+      <p>
+        No orders yet
+      </p>
+    
+    `;
+
+    return;
+  }
+
+  orders.forEach((order) => {
+    const card = document.createElement("div");
+    card.className = "order-card";
+
+    card.innerHTML = `
+      <div class="order-top">
+        <div>
+          <strong>
+            Order ID
+          </strong>
+
+          <p>
+            ${order.id}
+          </p>
+        </div>
+
+        <div class="
+          order-status
+          status-${order.status.toLowerCase()}
+        ">
+          ${order.status}
+        </div>
+      </div>
+
+      <div class="order-items">
+        ${order.items.map((item) => `
+          <div class="order-item">
+            <span>
+              ${item.name} x ${item.quantity}
+            </span>
+
+            <span>
+              Rp ${item.subtotal}
+            </span>
+
+            </div>
+          `
+        ).join("")}
+      </div>
+
+      <div class="order-total">
+        Total:
+        Rp ${order.totalPrice}
+      </div>
+    `;
+
+    ordersContainer.appendChild(card);
+  });
+}
+
+menuNav.addEventListener(
+  "click",
+
+  () => {
+    menuSection.style.display = "block";
+    ordersSection.style.display = "none";
+    menuNav.classList.add("active");
+    ordersNav.classList.remove("active");
+  }
+);
+
+ordersNav.addEventListener(
+  "click",
+
+  async () => {
+    menuSection.style.display = "none";
+    ordersSection.style.display = "block";
+    menuNav.classList.remove("active");
+    ordersNav.classList.add("active");
+    await loadMyOrders();
+  }
+);
+
 checkoutBtn.addEventListener(
   "click",
 
@@ -282,21 +400,14 @@ checkoutBtn.addEventListener(
       );
 
       console.log(response);
-
       alert("Checkout successful! Your order is being processed.");
 
       cart = [];
-
       saveCart();
-
       renderCart();
-
       await loadMenus();
-
     } catch (error) {
-
       console.error(error);
-
       alert(error.message || "Checkout failed. Please try again.");
     }
   }
