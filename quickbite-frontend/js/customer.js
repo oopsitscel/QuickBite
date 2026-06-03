@@ -256,15 +256,13 @@ function renderCart() {
 
 async function loadMyOrders() {
   try {
-    const orders = await fetchAPI("/orders",
-      {
-        headers: {
-          Authorization: `Bearer ${
-            localStorage.getItem("token")
-          }`,
-        },
-      }
-    );
+    const orders = await fetchAPI("/orders", {
+      headers: {
+        Authorization: `Bearer ${
+          localStorage.getItem("token")
+        }`,
+      },
+    });
     
     const userId = localStorage.getItem("userId");
 
@@ -413,14 +411,7 @@ checkoutBtn.addEventListener(
   }
 );
 
-logoutBtn.addEventListener(
-  "click",
-
-  () => {
-    localStorage.clear();
-    window.location.href = "login.html";
-  }
-);
+ordersSection.style.display = "none";
 
 loadMenus();
 

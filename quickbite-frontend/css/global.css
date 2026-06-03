@@ -7,7 +7,7 @@
 }
 
 body {
-  background: #f8f5fb;
+  background: #E8DFFF;
   color: #2b1d35;
 }
 
@@ -44,6 +44,27 @@ a {
 
 .gradient-btn:hover {
   transform: translateY(-2px);
-
   opacity: 0.9;
+}
+
+/* Section Header */
+.section-header h1 {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.section-header p {
+  color: black;
+  opacity: 0.7;
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 35px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #2d1b3d;
+  margin: 5px 0;
 }

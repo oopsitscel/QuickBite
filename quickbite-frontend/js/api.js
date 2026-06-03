@@ -28,3 +28,12 @@ async function fetchAPI( endpoint, options = {} ) {
 
   return data;
 }
+
+logoutBtn.addEventListener(
+  "click",
+
+  () => {
+    localStorage.clear();
+    window.location.href = "login.html";
+  }
+);
