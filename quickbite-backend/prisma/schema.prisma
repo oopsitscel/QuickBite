@@ -18,6 +18,7 @@ enum OrderStatus {
   COOKING
   READY
   COMPLETED
+  CANCELLED
 }
 
 model User {
@@ -61,6 +62,9 @@ model Menu {
 model Order {
   id          String      @id @default(uuid())
   status      OrderStatus @default(PENDING)
+  cancelledByRole String?
+  cancelReason String?
+  cancelledAt DateTime?
   totalPrice  Float
 
   customerId  String

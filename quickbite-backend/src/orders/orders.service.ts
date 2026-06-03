@@ -283,10 +283,11 @@ export class OrdersService {
     if (!order.chefId) throw new BadRequestException(`Order with ID ${orderId} has no assigned chef`);
     
     const validTransitions: Record<OrderStatus, OrderStatus[]> = {
-      PENDING : [OrderStatus.COOKING],
+      PENDING : [OrderStatus.COOKING, OrderStatus.CANCELLED],
       COOKING : [OrderStatus.READY],
       READY : [OrderStatus.COMPLETED],
       COMPLETED : [],
+      CANCELLED : [],
     };
     
     const allowed = validTransitions[order.status];

@@ -311,7 +311,7 @@
 
 .status-pending {
   background: #fef3c7;
-  color: #FFC107;
+  color: #d97706;
 }
 
 .status-cooking {
@@ -320,16 +320,19 @@
 }
 
 .status-ready {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.status-completed {
   background: #dcfce7;
   color: #16a34a;
 }
 
-.status-completed {
-  background: #e0e7ff;
-  color: #4f46e5;
+.status-cancelled {
+  background: #fee2e2;
+  color: #dc2626;
 }
-
-
 
 .order-items {
   display: flex;
