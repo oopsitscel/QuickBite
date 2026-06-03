@@ -160,7 +160,7 @@ function renderMenus(menus) {
           </span>
 
           <span class="price">
-            Rp ${menu.price}
+            Rp ${menu.price.toLocaleString("id-ID")}
           </span>
         </div>
       </div>

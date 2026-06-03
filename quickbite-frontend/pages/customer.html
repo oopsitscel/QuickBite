@@ -9,6 +9,7 @@
 
   <link rel="stylesheet" href="../css/global.css"/>
   <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/categories.css">
   <link rel="stylesheet" href="../css/menu.css"/>
   <link rel="stylesheet" href="../css/cart.css"/>
   <link rel="stylesheet" href="../css/orders.css"/>
@@ -40,8 +41,7 @@
   </nav>
 
   <!-- Main Content -->
-  <div class="container">
-
+  <div class="container">  
     <!-- Menu Section -->
     <section id="menuSection" class="menu-section">
       <div class="section-header">
@@ -52,10 +52,21 @@
         <p>
           Browse our delicious menu and place your order now.
         </p>
+      </div>
 
-        <h2 class="section-title">
-          Food Menu
+      <!-- CATEGORY -->
+      <div id="categoryHeader" class="category-header">
+        <h2 id="categoryTitle">
+            All Menu
         </h2>
+
+        <p id="categoryDescription">
+            Browse all available food and drinks.
+        </p>
+      </div>
+
+      <div id="categoryContainer" class="category-list">
+        <!-- Category Name will be dynamically inserted here -->>
       </div>
 
       <div id="menuContainer" class="menu-grid">

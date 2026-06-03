@@ -4,35 +4,149 @@ const menuContainer = document.getElementById("menuContainer");
 const ordersSection = document.getElementById("ordersSection");
 const ordersContainer = document.getElementById("ordersContainer");
 
+const categoryContainer = document.getElementById("categoryContainer");
+const categoryTitle = document.getElementById("categoryTitle");
+const categoryDescription = document.getElementById("categoryDescription");
+
+let allCategories = [];
+
 const menuNav = document.getElementById("menuNav");
 const ordersNav = document.getElementById("ordersNav");
 
 const cartItemsContainer = document.getElementById("cartItems");
 const cartTotal = document.getElementById("cartTotal");
+
 const checkoutBtn = document.getElementById("checkoutBtn");
 const logoutBtn = document.getElementById("logoutBtn");
  
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let activeCategoryId = null;
 let allMenus = [];
+
+async function loadCategories() {
+  try {
+    allCategories = await fetchAPI("/categories");
+    renderCategories();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function renderCategories() {
+  categoryContainer.innerHTML = "";
+
+  /* ALL BUTTON */
+  const allBtn = document.createElement("button");
+
+  allBtn.className = "category-btn active";
+  allBtn.innerText = "All";
+
+  allBtn.addEventListener(
+    "click",
+
+    () => {
+      activeCategoryId = null;
+      setActiveCategory(allBtn);
+
+      categoryTitle.innerText = "All Menu";
+      categoryDescription.innerText = "Browse all available food and drinks.";
+
+      renderMenus(allMenus);
+    }
+  );
+
+  categoryContainer.appendChild(allBtn);
+
+  /* CATEGORY BUTTONS */
+  allCategories.forEach((category) => {
+    const btn = document.createElement("button");
+
+    btn.className = "category-btn";
+    btn.innerText = category.name;
+
+    btn.addEventListener(
+      "click",
+
+      () => {
+        activeCategoryId = category.id;
+        setActiveCategory(btn);
+
+        const filtered = allMenus.filter(
+          (menu) => menu.category.id === category.id
+        );
+
+        categoryTitle.innerText = category.name;
+        categoryDescription.innerText = category.description 
+          || `Explore delicious ${category.name} menus.`;
+
+        renderMenus(filtered);
+      }
+    );
+
+    categoryContainer.appendChild(btn);
+  });
+}
+
+function setActiveCategory(activeBtn) {
+  const buttons = document.querySelectorAll(".category-btn");
+  buttons.forEach((btn) => {
+    btn.classList.remove("active");
+  });
+
+  activeBtn.classList.add("active");
+}
 
 async function loadMenus() {
   try {
-  allMenus = await fetchAPI("/menu");
-  renderMenus();
+    allMenus = await fetchAPI("/menu");
+
+    if (activeCategoryId) {
+      const activeCategory = allCategories.find(
+        (category) => category.id === activeCategoryId
+      );
+
+      const filtered = allMenus.filter(
+        (menu) => menu.category.id === activeCategoryId
+      );
+
+      categoryTitle.innerText = activeCategory.name;
+
+      categoryDescription.innerText = activeCategory.description
+        || `Explore delicious ${activeCategory.name} menus.`;
+
+      renderMenus(filtered);
+
+    } else {
+      categoryTitle.innerText = "All Menu";
+      categoryDescription.innerText = "Browse all available food and drinks.";
+
+      renderMenus(allMenus);
+    }
+
   } catch (error) {
     console.error("Failed to load menus:", error);
+
     menuContainer.innerHTML = `
       <p>
-        Failed to load menus. Please try again later 
+        Failed to load menus. Please try again later
       </p>
     `;
   }
 }
 
-function renderMenus() {
+function renderMenus(menus) {
   menuContainer.innerHTML = "";
 
-  allMenus.forEach((menu) => {
+  if (menus.length === 0) {
+    menuContainer.innerHTML = `
+      <p>
+        No menu available.
+      </p>
+    `;
+    return;
+  }
+
+  menus.forEach((menu) => {
     const card = document.createElement("div");
     card.className = "menu-card";
 
@@ -66,7 +180,7 @@ function renderMenus() {
 
         <div class="menu-info">
           <span class="price">
-            Rp ${menu.price}
+            Rp ${menu.price.toLocaleString("id-ID")}
           </span>
         </div>
 
@@ -77,7 +191,6 @@ function renderMenus() {
     `;
 
     const addButton = card.querySelector(".add-btn");
-
     addButton.addEventListener(
       "click",
       () => {
@@ -102,6 +215,10 @@ function addToCart(menuId) {
     }
     existing.quantity += 1;
   } else {
+    if (menu.stock <= 0) {
+      alert("This item is out of stock.");
+      return;
+    }
     cart.push({
       id: menu.id,
       name: menu.name,
@@ -112,7 +229,6 @@ function addToCart(menuId) {
   }
 
   saveCart();
-
   renderCart();
 }
 
@@ -127,7 +243,6 @@ function increaseQuantity(menuId) {
   item.quantity += 1;
 
   saveCart();
-
   renderCart();
 }
 
@@ -142,12 +257,12 @@ function decreaseQuantity(menuId) {
   }
 
   saveCart();
-
   renderCart();
 }
 
 function removeFromCart(menuId) {
   cart = cart.filter(item => item.id !== menuId);
+
   saveCart();
   renderCart();
 }
@@ -174,7 +289,6 @@ function renderCart() {
     return;
   }
 
-
   cart.forEach((item) => {
     total += item.price * item.quantity;
 
@@ -188,7 +302,7 @@ function renderCart() {
         </div>
 
         <div class="cart-price">
-          Rp ${item.price}
+          Rp ${item.price.toLocaleString("id-ID")}
         </div>
       </div>
 
@@ -248,7 +362,7 @@ function renderCart() {
 
     cartItemsContainer.appendChild(cartItem);
   });
-  cartTotal.innerText = `Rp ${total}`;
+  cartTotal.innerText = `Rp ${total.toLocaleString("id-ID")}`;
 }
 
 async function loadMyOrders() {
@@ -410,6 +524,6 @@ checkoutBtn.addEventListener(
 
 ordersSection.style.display = "none";
 
+loadCategories();
 loadMenus();
-
 renderCart();

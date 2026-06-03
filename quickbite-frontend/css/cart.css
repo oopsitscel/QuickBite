@@ -38,7 +38,7 @@
 .cart-price {
   color: #6b7280;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 16px;
   margin-top: 4px;
 }
 
@@ -51,6 +51,9 @@
 .cart-footer {
   margin-top: 5px;
   padding-top: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #8f6bff;
 }
 
 .quantity-box {
