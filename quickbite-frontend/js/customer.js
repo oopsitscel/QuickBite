@@ -65,9 +65,6 @@ function renderMenus() {
         </div>
 
         <div class="menu-info">
-          <span>
-            ${menu.category.name}
-          </span>
           <span class="price">
             Rp ${menu.price}
           </span>

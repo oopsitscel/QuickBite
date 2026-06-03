@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title> QuickBite </title>
+
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/guest.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/categories.css"/>
+  <link rel="stylesheet" href="../css/menu.css"/>
+  <link rel="stylesheet" href="../css/orders.css"/>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <h1> QuickBite </h1>
+
+      <div class="nav-links">
+        <button
+          id="allMenuBtn"
+          class="active"
+        >
+          All Menu
+        </button>
+      </div>
+    </div>
+
+    <button
+      id="loginBtn"
+      class="gradient-btn"
+    >
+      Login
+    </button>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="container">
+    <div class="main-content">
+      <div class="section-header">
+        <h1> Explore Our Menu </h1>
+
+        <p>
+          Delicious meals prepared by
+          QuickBite chefs.
+        </p>
+      </div>
+
+      <div class="guest-banner">
+        <h2> Want to order food? </h2>
+
+        <p>
+        Login to place orders, 
+        track deliveries, and enjoy QuickBite.
+        </p>
+
+        <button id="bannerLoginBtn" class="gradient-btn">
+          Login Now
+        </button>
+      </div>
+
+      <!-- CATEGORY -->
+      <div id="categoryHeader" class="category-header">
+        <h2 id="categoryTitle">
+            All Menu
+        </h2>
+
+        <p id="categoryDescription">
+            Browse all available food and drinks.
+        </p>
+      </div>
+
+      <div id="categoryContainer" class="category-list">
+        <!-- Category Name will be dynamically inserted here -->>
+      </div>
+      
+
+      <!-- MENU -->
+      <div id="menuContainer" class="menu-grid">
+        <!-- Menu items will be dynamically inserted here -->
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/guest.js"></script>
+
+</body>
+</html>

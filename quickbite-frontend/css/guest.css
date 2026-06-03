@@ -1,0 +1,45 @@
+.container {
+  padding: 30px;
+}
+
+.main-content {
+  width: 100%;
+}
+
+.guest-banner {
+  background: linear-gradient(
+    135deg,
+    #d946ef,
+    #8b5cf6
+  );
+  color: white;
+  padding: 28px 32px;
+  border-radius: 24px;
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
+}
+
+.guest-banner h2 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.guest-banner p {
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.guest-banner .gradient-btn {
+  background: white;
+  color: #8b5cf6;
+  font-weight: 700;
+  min-width: 160px;
+}
+
+.guest-banner .gradient-btn:hover {
+  opacity: 0.9;
+}

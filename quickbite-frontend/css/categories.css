@@ -1,0 +1,44 @@
+.category-header {
+  margin-bottom: 24px;
+}
+
+.category-header h2 {
+  font-size: 34px;
+  color: black;
+  margin-bottom: 6px;
+}
+
+.category-header p {
+  color: #2d1b3d;
+  font-size: 17px;
+}
+
+.category-list {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.category-btn {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.category-btn:hover {
+  opacity: 0.8;
+}
+
+.category-btn.active {
+  background: linear-gradient(
+    135deg,
+    #d946ef,
+    #8b5cf6
+  );
+  color: white;
+}
