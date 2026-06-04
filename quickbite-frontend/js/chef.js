@@ -18,6 +18,13 @@ let allCategories = [];
 let allMenus = [];
 let activeCategoryId = null;
 
+const savedChefName = localStorage.getItem("name") || null; 
+const chefNameElement = document.getElementById("chefName");
+
+if (chefNameElement) {
+  chefNameElement.innerText = savedChefName;
+}
+
 async function loadCategories() {
   try {
     allCategories = await fetchAPI("/categories");

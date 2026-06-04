@@ -23,6 +23,13 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let activeCategoryId = null;
 let allMenus = [];
 
+const savedUserName = localStorage.getItem("name") || null; 
+const userNameElement = document.getElementById("userName");
+
+if (userNameElement) {
+  userNameElement.innerText = savedUserName;
+}
+
 async function loadCategories() {
   try {
     allCategories = await fetchAPI("/categories");

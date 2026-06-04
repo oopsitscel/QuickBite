@@ -99,6 +99,11 @@ function saveUserSession(data) {
   );
 
   localStorage.setItem(
+    "name",
+    data.user.name
+  )
+
+  localStorage.setItem(
     "role",
     data.user.role
   );
