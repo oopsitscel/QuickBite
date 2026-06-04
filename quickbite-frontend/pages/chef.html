@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>QuickBite Chef</title>
+
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/categories.css">
+  <link rel="stylesheet" href="../css/menu.css"/>
+  <link rel="stylesheet" href="../css/orders.css">
+  <link rel="stylesheet" href="../css/chef.css">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <h1>
+        QuickBite Chef
+      </h1>
+
+      <div class="nav-links">
+        <button id="menuNav" class="active">
+          Manage Menu
+        </button>
+
+        <button id="ordersNav">
+          Assigned Orders
+        </button>
+      </div>
+    </div>
+
+    <button id="logoutBtn" class ="logout-btn">
+      Logout
+    </button>
+    
+  </nav>
+
+  <!-- MENU SECTION -->
+  <section id="menuSection" class="page-section" >
+    <div class="chef-main">
+      <div class="section-header"> 
+        <h1>
+          Welcome to QuickBite, Chef <span id="chefName"></span>!
+        </h1>
+        <h1> Kitchen Menu Management </h1>
+        <p> Add and update food menus </p> 
+      </div> 
+
+      <!-- CATEGORY -->
+      <div id="categoryHeader" class="category-header">
+        <h2 id="categoryTitle">
+            All Menu
+        </h2>
+
+        <p id="categoryDescription">
+            Browse all available food and drinks.
+        </p>
+      </div>
+
+      <div id="categoryContainer" class="category-list">
+        <!-- Category Name will be dynamically inserted here -->
+      </div>
+
+      <!-- MENU LIST -->
+      <div id="menuContainer" class="menu-grid">
+        <!-- Menu items will be dynamically inserted here -->
+      </div>
+    </div>
+    
+    <div class="chef-sidebar">
+      <!-- CREATE MENU -->
+      <div class="create-menu-card">
+        <h2> Create New Menu </h2>
+
+        <form id="menuForm"> 
+            <input 
+            type="text"
+            id="menuName"
+            placeholder="Menu Name" 
+            /> 
+
+            <input 
+            type="text" 
+            id="menuDescription" 
+            placeholder="Description"
+            />
+            
+            <input 
+            type="number"
+            id="menuPrice"
+            placeholder="Price"
+            /> 
+            
+            <input 
+            type="number"
+            id="menuStock"
+            placeholder="Stock"
+            /> 
+            
+            <input 
+            type="number"
+            id="menuCookingTime"
+            placeholder="Cooking Time (mins)"
+            />
+            
+            <input 
+            type="text" 
+            id="menuImage"
+            placeholder="Image URL"
+            /> 
+
+            <input
+            type="hidden"
+            id="editingMenuId"
+            />
+
+            <select id="menuCategory">
+            <option value="">
+                Select Category
+            </option>
+            </select>
+
+            
+            <button type="submit" class="gradient-btn" > 
+            Create Menu 
+            </button> 
+        </form>
+      </div>
+    </div>
+  </section>
+  
+  <!-- ORDERS SECTION --> 
+  <section id="ordersSection" class="orders-page" >
+    <div class="section-header">
+      <h1> Assigned Orders </h1>
+      <p> Manage cooking workflow </p>
+    </div>
+    
+    <div id="ordersContainer">
+      <!-- Orders will be dynamically inserted here -->
+    </div>
+  </section> 
+  
+  <script src="../js/api.js"></script>
+  <script src="../js/chef.js"></script>
+
+</body>
+</html>

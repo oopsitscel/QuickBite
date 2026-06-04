@@ -250,7 +250,7 @@ export class OrdersService {
 
     if (chef.role !== Role.CHEF) throw new BadRequestException('Selected user is not a chef');
     
-    const updated = this.prisma.order.update({
+    const updated = await this.prisma.order.update({
       where: { id: orderId },
       data: { chefId },
       include: {

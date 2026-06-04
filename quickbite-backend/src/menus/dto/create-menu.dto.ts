@@ -21,7 +21,7 @@ export class CreateMenuDto {
 
   @IsNotEmpty()
   @IsInt()
-  @Min(10)
+  @Min(1)
   estimatedCookingTime!: number;
 
   @IsOptional()

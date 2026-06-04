@@ -1,0 +1,125 @@
+.page-section {
+  padding: 30px;
+}
+
+/* LAYOUT */
+.page-section {
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+}
+
+.chef-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.chef-sidebar {
+  width: 340px;
+  max-width: 100%;
+  position: sticky;
+  top: 80px;
+}
+
+/* CREATE MENU CARD */
+.create-menu-card {
+  background: white;
+  padding: 16px 20px;
+  border-radius: 24px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.create-menu-card h2 {
+  font-size: 22px;
+  color: #c84cb3;
+  margin-top: 3px;
+  margin-bottom: 10px;
+}
+
+/* FORM */
+#menuForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#menuForm input, #menuForm select {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  font-size: 15px;
+  background: white;
+  color: #4b5563;
+}
+
+/* BUTTON */
+.edit-btn {
+  width: 100%;
+  border: none;
+  padding: 14px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #b353b4, #8b5cf6);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px; 
+  transition: 
+    opacity 0.2s ease, 
+    transform 0.1s ease;
+}
+
+.edit-btn:hover{
+    opacity: 0.8;
+}
+
+.edit-btn:active{
+    transform: scale(0.98);
+}
+
+/* ORDER ACTIONS */
+.order-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.action-btn {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.cooking-btn {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.ready-btn {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.completed-btn {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.cancel-btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1000px) {
+  .page-section {
+    flex-direction: column;
+  }
+
+  .chef-sidebar {
+    width: 100%;
+    position: static;
+  }
+}
