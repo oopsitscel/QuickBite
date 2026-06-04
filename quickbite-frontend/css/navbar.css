@@ -3,7 +3,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 48px;
+  padding: 0px 48px;
+  height: 75px;
   background: white;
   position: sticky;
   top: 0;
