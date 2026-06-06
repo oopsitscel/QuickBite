@@ -38,7 +38,7 @@ export class OrdersController {
     return this.ordersService.findOne(id);
   }
 
-  @Post(':id/assign-chef') // Only admin can assign chefs
+  @Patch(':id/assign-chef') // Only admin can assign chefs
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @Roles('ADMIN') 

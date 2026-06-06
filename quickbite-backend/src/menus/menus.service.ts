@@ -84,7 +84,7 @@ export class MenusService {
     });
   }
 
-  async updateAvailability(id: string) {
+  async updateAvailability(id: string, isAvailable: boolean) {
     // Menu Existence Validation
     const menu = await this.prisma.menu.findUnique({
       where: { id },
@@ -94,7 +94,7 @@ export class MenusService {
     return this.prisma.menu.update({
       where: { id },
       data: {
-        isAvailable: false,
+        isAvailable,
       },
     });
   }

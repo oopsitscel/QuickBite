@@ -49,7 +49,10 @@ export class MenusController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @Roles('ADMIN', 'CHEF')
-  updateAvailability(@Param('id') id: string) {
-    return this.menusService.updateAvailability(id);
+  updateAvailability(
+    @Param('id') id: string,
+    @Body() body: {isAvailable: boolean}
+  ) {
+    return this.menusService.updateAvailability(id, body.isAvailable);
   }
 }

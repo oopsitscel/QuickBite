@@ -32,7 +32,7 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Patch(':id/promote-chef') // Only admin can promote a chef
+  @Patch(':id/role') // Only admin can update role
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @Roles('ADMIN')

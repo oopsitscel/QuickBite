@@ -238,36 +238,6 @@ function fillEditForm(menu) {
   document.querySelector(".create-menu-card h2").innerText = "Edit Menu";
 }
 
-async function editMenu(menuId) {
-  const newStock = prompt("Enter new stock:");
-  if (newStock === null) return;
-
-  try {
-    await fetchAPI(`/menu/${menuId}`,{
-      method: "PATCH",
-
-      headers: {
-        Authorization: `Bearer ${
-          localStorage.getItem("token")
-        }`,
-      },
-      
-      body: JSON.stringify({
-        stock: Number(newStock),
-      }),
-    });
-
-    alert("Menu updated.");
-    await loadMenus();
-  } catch (error) {
-    console.error(error);
-
-    alert(
-      error.message || "Failed to update menu."
-    );
-  }
-}
-
 async function loadOrders() {
   try {
     const orders = await fetchAPI("/orders", {

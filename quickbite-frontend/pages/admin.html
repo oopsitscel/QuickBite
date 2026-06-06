@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>QuickBite Admin</title>
+
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/widget/navbar.css">
+  <link rel="stylesheet" href="../css/widget/orders.css">
+  <link rel="stylesheet" href="../css/widget/menu.css">
+  <link rel="stylesheet" href="../css/widget/categories.css">
+  <link rel="stylesheet" href="../css/widget/menuCard.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <h1>QuickBite Admin</h1>
+
+      <div class="nav-links">
+        <button id="ordersNav" class="active">
+          Orders
+        </button>
+
+        <button id="usersNav">
+          Users
+        </button>
+
+        <button id="categoriesNav">
+          Categories
+        </button>
+        
+        <button id="menusNav">
+          Menus
+        </button>
+      </div>
+    </div>
+
+    <button id="logoutBtn" class="logout-btn">
+      Logout
+    </button>
+  </nav>
+
+  <!-- ORDERS -->
+  <section id="ordersSection" class="page-section">
+
+    <div class="section-header">
+      <h1>Welcome to QuickBite, Admin <span id="adminName"></span>!</h1>
+      <h2>Orders Management</h2>
+      <p>Assign chefs and monitor orders</p>
+    </div>
+
+    <div id="ordersContainer">
+      <!-- dynamic -->
+    </div>
+
+  </section>
+
+  <!-- USERS -->
+  <section id="usersSection" class="page-section">
+
+    <div class="section-header">
+      <h1>User Management</h1>
+      <p>Manage user roles</p>
+    </div>
+
+    <div id="usersContainer">
+      <!-- dynamic -->
+    </div>
+
+  </section>
+
+  <!-- CATEGORIES -->
+  <section id="categoriesSection" class="page-section">
+
+    <div class="section-header">
+      <h1>Category Management</h1>
+      <p>Create new categories</p>
+    </div>
+
+    <div class="create-category-card">
+      <form id="categoryForm">
+        <input
+          type="text"
+          id="categoryName"
+          placeholder="Category Name"
+        >
+
+        <textarea
+          id="categoryDescription"
+          placeholder="Category Description"
+        ></textarea>
+
+        <button
+          type="submit"
+          class="gradient-btn"
+        >
+          Create Category
+        </button>
+      </form>
+    </div>
+
+    <div id="categoriesContainer" class="category-list">
+      <!-- dynamic -->
+    </div>
+
+  </section>
+
+  <!-- MENUS -->
+  <section id="menusSection" class="page-section">
+    <div class="menu-page">
+      <div class ="menu-main">
+        <div class="section-header">
+          <h1>Menu Management</h1>
+          <p>Manage menu availability</p>
+        </div>
+
+        <!-- CATEGORY -->
+        <div id="categoryHeader" class="category-header">
+          <h2 id="categoryTitle">
+            All Menu
+          </h2>
+
+          <p id="categoryDescription">
+            Browse all available food and drinks.
+          </p>
+        </div>
+
+        <div id="categoryContainer" class="category-list">
+            <!-- Category Name will be dynamically inserted here -->
+        </div>
+
+        <div id="menusContainer" class="menu-grid">
+          <!-- Menu will dynamically here -->
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <!-- CREATE MENU -->
+        <div class="create-menu-card">
+          <h2> Create New Menu </h2>
+
+          <form id="menuForm"> 
+            <input 
+            type="text"
+            id="menuName"
+            placeholder="Menu Name" 
+            /> 
+
+            <input 
+            type="text" 
+            id="menuDescription" 
+            placeholder="Description"
+            />
+            
+            <input 
+            type="number"
+            id="menuPrice"
+            placeholder="Price"
+            /> 
+                
+            <input 
+            type="number"
+            id="menuStock"
+            placeholder="Stock"
+            /> 
+                
+            <input 
+            type="number"
+            id="menuCookingTime"
+            placeholder="Cooking Time (mins)"
+            />
+                
+            <input 
+            type="text" 
+            id="menuImage"
+            placeholder="Image URL"
+            /> 
+
+            <input
+            type="hidden"
+            id="editingMenuId"
+            />
+
+            <select id="menuCategory">
+                <option value="">
+                    Select Category
+                </option>
+            </select>
+
+            <button type="submit" class="gradient-btn" > 
+              Create Menu 
+            </button> 
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    </div>
+  </section>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/admin.js"></script>
+
+</body>
+</html>
