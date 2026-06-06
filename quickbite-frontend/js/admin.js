@@ -97,26 +97,31 @@ async function renderOrders(orders) {
         Total: Rp ${order.totalPrice}
       </div>
 
-      <div class="assign-chef-row">
-        <select id="chef-${order.id}" class="chef-select">
-          <option value="">
-            Select Chef
-          </option>
-
-          ${chefs.map(chef => `
-            <option value="${chef.id}">
-              ${chef.name}
+      ${!order.chef
+      ? `
+        <div class="assign-chef-row">
+          <select id="chef-${order.id}" class="chef-select">
+            <option value="">
+              Select Chef
             </option>
-          `).join("")}
-        </select>
 
-        <button
-          class="gradient-btn"
-          onclick="assignChef('${order.id}')"
+            ${chefs.map(chef => `
+              <option value="${chef.id}">
+                ${chef.name}
+              </option>
+            `).join("")}
+          </select>
+
+          <button
+            class="gradient-btn"
+            onclick="assignChef('${order.id}')"
           >
-          Assign Chef
-        </button>
-      </div>
+            Assign Chef
+          </button>
+        </div>
+        `
+        : ""
+      }
     `;
 
     container.appendChild(card);
@@ -292,6 +297,43 @@ function renderCategories(categories) {
   });
 }
 
+async function createCategory(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("categoryName").value;
+  const description = document.getElementById("categoryDescription").value;
+
+  try {
+    const result = await fetchAPI("/categories", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ name, description }),
+    });
+
+    console.log("Category created:", result);
+    await loadCategories();
+    alert("Category created successfully");
+    event.target.reset();
+
+  } catch (error) {
+    console.error("Create category failed:", error);
+    alert(error.message || "Failed to create category");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("categoryForm");
+  form.addEventListener("submit", createCategory);
+
+  const menuForm = document.getElementById("menuForm");
+  if (menuForm) {
+    menuForm.addEventListener("submit", handleSubmitMenu);
+  }
+});
+
 function renderCategoryOptions() {
   const select = document.getElementById("menuCategory");
 
@@ -324,7 +366,7 @@ function renderCategoriesForMenuPage(categories) {
 
   const allBtn = document.createElement("button");
   allBtn.className = "category-btn active";
-  allBtn.innerText = "All Menu";
+  allBtn.innerText = "All";
 
   allBtn.addEventListener(
     "click", 
@@ -462,6 +504,92 @@ function renderMenus(menus) {
   });
 }
 
+const menuForm = document.getElementById("menuForm");
+if (menuForm) {
+  menuForm.addEventListener(
+    "submit",
+
+    async (e) => {
+      e.preventDefault();
+
+      const editingId = document.getElementById("editingMenuId")?.value || "";
+      const payload = {
+        name: document.getElementById("menuName").value,
+        description: document.getElementById("menuDescription").value,
+        price: Number(document.getElementById("menuPrice").value),
+        stock: Number(document.getElementById("menuStock").value),
+        estimatedCookingTime: Number(document.getElementById("menuCookingTime").value),
+        imageUrl: document.getElementById("menuImage").value,
+        categoryId: document.getElementById("menuCategory").value,
+      };
+
+      try {
+        /* EDIT MENU */
+        if (editingId) {
+          delete payload.name;
+
+          await fetchAPI(`/menu/${editingId}`, {
+          method: "PATCH",
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              localStorage.getItem("token")
+            }`,
+          },
+
+          body: JSON.stringify(payload),
+          });
+          alert("Menu updated!");
+        } 
+        
+        /* CREATE MENU */
+        else {
+          await fetchAPI("/menu", {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              localStorage.getItem("token")
+            }`,
+          },
+
+          body: JSON.stringify(payload),
+          });
+
+          alert("Menu created!");
+        }
+
+        menuForm.reset();
+
+        document.getElementById("editingMenuId").value = "";
+        document.querySelector("#menuForm button[type='submit']").innerText = "Create Menu";
+        refreshFilteredMenus();
+
+        } catch (error) {
+        console.error(error);
+
+        alert(
+            error.message || "Failed to save menu."
+        );
+        }
+    }
+  )
+}
+
+async function handleSubmitMenu(event) {
+  event.preventDefault();
+
+  const editingMenuId = document.getElementById("editingMenuId")?.value || "";
+
+  if (editingMenuId) {
+    await updateMenu(event, editingMenuId);
+  } else {
+    await createMenu(event);
+  }
+}
+
 function fillMenuForm(menuId) {
   const menu = allMenus.find((m) => m.id === menuId);
   if (!menu) return;
@@ -477,6 +605,16 @@ function fillMenuForm(menuId) {
 
   document.querySelector("#menuForm button[type='submit']").innerText = "Update Menu";
   document.querySelector(".create-menu-card h2").innerText = "Edit Menu";
+}
+
+function resetMenuForm() {
+  const form = document.getElementById("menuForm");
+  form.reset();
+
+  document.getElementById("editingMenuId").value = "";
+
+  document.querySelector("#menuForm button[type='submit']").innerText = "Create Menu";
+  document.querySelector(".create-menu-card h2").innerText = "Create Menu";
 }
 
 async function toggleAvailability(menuId, currentAvailability) {
@@ -509,9 +647,9 @@ async function toggleAvailability(menuId, currentAvailability) {
 
 function refreshFilteredMenus() {
   const activeBtn = document.querySelector("#categoryContainer .category-btn.active");
-  const activeCategoryName = activeBtn ? activeBtn.innerText : "All Menu";
+  const activeCategoryName = activeBtn ? activeBtn.innerText : "All";
 
-  if (activeCategoryName === "All Menu") {
+  if (activeCategoryName === "All") {
     renderMenus(allMenus);
   } else {
     const activeCategory = allCategories.find(cat => cat.name === activeCategoryName);

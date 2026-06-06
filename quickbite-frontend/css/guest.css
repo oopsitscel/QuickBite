@@ -1,5 +1,5 @@
 .main-content {
-  width: 100%;
+  padding: 30px;
 }
 
 .guest-banner {
@@ -8,10 +8,12 @@
     #d946ef,
     #8b5cf6
   );
+  height: 100px;
+  max-width: 1000px;
   color: white;
   padding: 28px 32px;
   border-radius: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,7 +23,6 @@
 
 .guest-banner h2 {
   font-size: 28px;
-  margin-bottom: 8px;
 }
 
 .guest-banner p {

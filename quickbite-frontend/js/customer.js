@@ -15,6 +15,7 @@ const ordersNav = document.getElementById("ordersNav");
 
 const cartItemsContainer = document.getElementById("cartItems");
 const cartTotal = document.getElementById("cartTotal");
+const cartWidget = document.querySelector(".cart-section");
 
 const checkoutBtn = document.getElementById("checkoutBtn");
 const logoutBtn = document.getElementById("logoutBtn");
@@ -469,6 +470,10 @@ menuNav.addEventListener(
     ordersSection.style.display = "none";
     menuNav.classList.add("active");
     ordersNav.classList.remove("active");
+
+    if(cartWidget){
+      cartWidget.style.display = "block";
+    }
   }
 );
 
@@ -480,6 +485,10 @@ ordersNav.addEventListener(
     ordersSection.style.display = "block";
     menuNav.classList.remove("active");
     ordersNav.classList.add("active");
+    
+    if(cartWidget){
+      cartWidget.style.display = "none";
+    }
     await loadMyOrders();
   }
 );

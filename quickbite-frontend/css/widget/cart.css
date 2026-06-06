@@ -5,8 +5,11 @@
   padding: 24px;
   height: fit-content;
   position: sticky;
-  top: 20px;
+  top: 90px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+  width: 350px;
+  box-sizing: border-box;
 }
 
 .empty-cart {

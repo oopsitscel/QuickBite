@@ -1,5 +1,5 @@
 .category-header {
-  margin-bottom: 24px;
+  margin-bottom: 15px;
 }
 
 .category-header h2 {
@@ -17,7 +17,7 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
 }
 
 .category-btn {
