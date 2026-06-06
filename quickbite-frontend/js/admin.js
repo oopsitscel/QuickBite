@@ -16,6 +16,7 @@ if (adminNameElement) {
 }
 
 let allMenus = [];
+let allCategories = [];
 
 async function loadOrders() {
   try {
@@ -310,6 +311,56 @@ function renderCategoryOptions() {
   });
 }
 
+function renderCategoriesForMenuPage(categories) {
+  const container = document.getElementById("categoryContainer");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!categories || !categories.length) {
+    container.innerHTML = "<p>No categories.</p>";
+    return;
+  }
+
+  const allBtn = document.createElement("button");
+  allBtn.className = "category-btn active";
+  allBtn.innerText = "All Menu";
+
+  allBtn.addEventListener(
+    "click", 
+    
+    () => {
+    document.querySelectorAll("#categoryContainer .category-btn").forEach(b => b.classList.remove("active"));
+    allBtn.classList.add("active");
+    renderMenus(allMenus); 
+  });
+  container.appendChild(allBtn);
+
+  categories.forEach((category) => {
+    const btn = document.createElement("button");
+    btn.className = "category-btn";
+    btn.innerText = category.name;
+
+    btn.addEventListener(
+      "click", 
+      
+      () => {
+        document.querySelectorAll("#categoryContainer .category-btn").forEach(
+          b => b.classList.remove("active")
+        );
+        btn.classList.add("active");
+
+        const filteredMenus = allMenus.filter(
+          menu => menu.category?.id === category.id
+        );
+        renderMenus(filteredMenus);
+      }
+    );
+
+    container.appendChild(btn);
+  });
+}
+
 async function loadMenus() {
   try {
     allMenus = await fetchAPI("/menu");
@@ -319,98 +370,6 @@ async function loadMenus() {
   } catch (error) {
     console.error(error);
   }
-}
-
-function renderMenus(menus) {
-  const container = document.getElementById("menusContainer");
-  container.innerHTML = "";
-
-  if (!menus.length) {
-    container.innerHTML =
-      "<p>No menu available.</p>";
-    return;
-  }
-
-  menus.forEach((menu) => {
-    const card = document.createElement("div");
-
-    card.className = "menu-card";
-
-    card.innerHTML = `
-      ${
-        menu.imageUrl
-          ? `
-            <img
-              class="menu-image"
-              src="${menu.imageUrl}"
-            />
-          `
-          : `
-            <div class="no-image">
-              No Photo Available
-            </div>
-          `
-      }
-
-      <div class="menu-content">
-        <h3>${menu.name}</h3>
-
-        <p>${menu.description}</p>
-
-        <div class="menu-info">
-          <span>
-            Stock: ${menu.stock}
-          </span>
-
-          <span>
-            ${menu.estimatedCookingTime} mins
-          </span>
-        </div>
-
-        <div class="menu-info">
-          <span class="price">
-            Rp ${menu.price.toLocaleString("id-ID")}
-          </span>
-
-          <span class="
-            menu-badge
-            ${menu.isAvailable
-              ? "available"
-              : "disabled"}
-          ">
-            ${menu.isAvailable
-              ? "Available"
-              : "Disabled"}
-          </span>
-        </div>
-
-        <div class="menu-actions">
-          <button
-            class="gradient-btn edit-btn"
-            onclick="fillMenuForm('${menu.id}')"
-          >
-            Edit
-          </button>
-
-          <button
-            class="gradient-btn availability-btn"
-            onclick="toggleAvailability(
-              '${menu.id}',
-              ${menu.isAvailable}
-            )"
-          >
-            ${
-              menu.isAvailable
-                ? "Disable"
-                : "Enable"
-            }
-          </button>
-        </div>
-      </div>
-    `;
-
-    container.appendChild(card);
-  });
 }
 
 function renderMenus(menus) {
@@ -538,12 +497,30 @@ async function toggleAvailability(menuId, currentAvailability) {
       }),
     });
 
-    await loadMenus();
+    allMenus = await fetchAPI("/menu");
+    refreshFilteredMenus();
 
   } catch (error) {
     console.error(error);
 
     alert(error.message || "Failed to update availability");
+  }
+}
+
+function refreshFilteredMenus() {
+  const activeBtn = document.querySelector("#categoryContainer .category-btn.active");
+  const activeCategoryName = activeBtn ? activeBtn.innerText : "All Menu";
+
+  if (activeCategoryName === "All Menu") {
+    renderMenus(allMenus);
+  } else {
+    const activeCategory = allCategories.find(cat => cat.name === activeCategoryName);
+    if (activeCategory) {
+      const filteredMenus = allMenus.filter(menu => menu.category?.id === activeCategory.id);
+      renderMenus(filteredMenus);
+    } else {
+      renderMenus(allMenus);
+    }
   }
 }
 
@@ -597,6 +574,13 @@ menusNav.addEventListener(
 
     menusSection.style.display = "block";
     menusNav.classList.add("active");
+    
+    try {
+      allCategories = await fetchAPI("/categories");
+      renderCategoriesForMenuPage(allCategories);
+    } catch (err) {
+      console.error("Gagal memuat kategori di page menu:", err);
+    }
 
     await loadMenus();
   }
@@ -619,3 +603,4 @@ categoriesNav.addEventListener(
 hideAllSections();
 ordersSection.style.display = "block";
 loadOrders();
+loadCategories();

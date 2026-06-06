@@ -106,7 +106,11 @@ function setActiveCategory(activeBtn) {
 function renderMenus(menus) {
   menuContainer.innerHTML = "";
 
-  if (menus.length === 0) {
+  const availableMenus = menus.filter(
+    menu => menu.isAvailable === true
+  );
+
+  if (!availableMenus.length) {
     menuContainer.innerHTML = `
       <p>
         No menu available.
@@ -115,7 +119,7 @@ function renderMenus(menus) {
     return;
   }
 
-  menus.forEach((menu) => {
+  availableMenus.forEach((menu) => {
     const card = document.createElement("div");
     card.className = "menu-card";
 
